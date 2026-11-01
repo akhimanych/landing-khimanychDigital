@@ -1,5 +1,5 @@
 import { useId } from "react";
-import styles from "./AnimatedK.module.css";
+import styles from "./animatedK.module.css";
 
 type AnimatedKProps = { variant?: "hero" | "logo" };
 

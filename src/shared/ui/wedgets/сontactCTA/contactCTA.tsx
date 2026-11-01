@@ -1,5 +1,5 @@
 import { useId } from "react";
-import styles from "./ContactCTA.module.css";
+import styles from "./contactCTA.module.css";
 
 export default function ContactCTA() {
   const id = useId();
