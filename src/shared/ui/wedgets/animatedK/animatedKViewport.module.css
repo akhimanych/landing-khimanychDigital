@@ -1,0 +1,15 @@
+.wrapper {
+  width: 100%;
+  min-width: 0;
+}
+
+@media (max-width: 1024px) {
+  .wrapper[data-started="false"],
+  .wrapper[data-started="false"] *,
+  .wrapper[data-started="false"]::before,
+  .wrapper[data-started="false"]::after,
+  .wrapper[data-started="false"] *::before,
+  .wrapper[data-started="false"] *::after {
+    animation-play-state: paused !important;
+  }
+}
