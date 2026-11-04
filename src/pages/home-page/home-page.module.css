@@ -133,15 +133,12 @@
     background-color 180ms ease,
     transform 180ms ease;
 }
-.secondaryLink {
-  padding-block: 8px;
-  border-bottom: 1px solid rgb(245 243 248 / 45%);
-  color: #f5f3f8;
-  font-size: clamp(16px, 1.4vw, 25px);
-  line-height: 1.3;
-  text-decoration: none;
-  white-space: nowrap;
-  transition: color 180ms ease;
+.primaryArrow {
+  display: block;
+  flex: 0 0 18px;
+  width: 18px;
+  height: 18px;
+  transition: transform 180ms ease;
 }
 .note {
   margin: 28px 0 0;
@@ -159,14 +156,12 @@
 .logo:focus-visible,
 .navLink:focus-visible,
 .headerContact:focus-visible,
-.primaryLink:focus-visible,
-.secondaryLink:focus-visible {
+.primaryLink:focus-visible {
   outline: 2px solid #c8a6ff;
   outline-offset: 6px;
 }
 @media (hover: hover) {
-  .navLink:hover,
-  .secondaryLink:hover {
+  .navLink:hover {
     color: #c8a6ff;
   }
   .headerContact:hover {
@@ -177,6 +172,9 @@
     background-color: #a16bff;
     transform: translateY(-2px);
   }
+  .primaryLink:hover .primaryArrow {
+    transform: translate(2px, -2px);
+  }
 }
 @media (max-width: 900px) {
   .hero {
@@ -186,6 +184,12 @@
   }
   .title {
     font-size: clamp(38px, 7.5vw, 64px);
+  }
+  .titleLine {
+    display: inline;
+  }
+  .titleLine:not(:last-child)::after {
+    content: " ";
   }
   .description {
     max-width: 580px;
@@ -242,8 +246,7 @@
   .actions {
     gap: 20px;
   }
-  .primaryLink,
-  .secondaryLink {
+  .primaryLink {
     font-size: 16px;
   }
   .note {
@@ -259,7 +262,10 @@
   .navLink,
   .headerContact,
   .primaryLink,
-  .secondaryLink {
+  .primaryArrow {
     transition: none;
+  }
+  .primaryLink:hover .primaryArrow {
+    transform: none;
   }
 }

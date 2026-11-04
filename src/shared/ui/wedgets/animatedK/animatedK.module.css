@@ -1,5 +1,4 @@
 .root {
-  --rotation-delay: 3.6s;
   position: relative;
   isolation: isolate;
   width: 100%;
@@ -7,7 +6,6 @@
   aspect-ratio: 6 / 7;
   container-type: inline-size;
 }
-
 .grid {
   position: absolute;
   z-index: -2;
@@ -17,8 +15,8 @@
     linear-gradient(to bottom, rgb(176 135 242 / 12%) 1px, transparent 1px);
   background-size: 25% 25%;
   mask-image: radial-gradient(ellipse at center, #000 35%, transparent 75%);
+  pointer-events: none;
 }
-
 .glow {
   position: absolute;
   z-index: -1;
@@ -30,43 +28,41 @@
   );
   pointer-events: none;
 }
-
+.scene {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 6 / 7;
+  transform-origin: 58% 50%;
+  animation: rotate-k 16s ease-in-out 10.2s infinite;
+}
 .svg {
   display: block;
   width: 100%;
   height: auto;
   overflow: visible;
-  transform-origin: 58% 50%;
-  animation: rotate-k 12s ease-in-out var(--rotation-delay, 3.6s) infinite;
 }
-
 .outline {
   stroke: #d6bcff;
   stroke-width: 1;
   stroke-opacity: 0.55;
   stroke-linejoin: round;
 }
-
 .facet {
   stroke: #e0caff;
   stroke-width: 1;
   stroke-opacity: 0.4;
   stroke-linejoin: round;
 }
-
-.floating {
-  transform-box: fill-box;
-  transform-origin: center;
-}
-
+.floating,
 .piece {
   transform-box: fill-box;
   transform-origin: center;
+}
+.piece {
   animation-duration: 1.2s;
   animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
   animation-fill-mode: both;
 }
-
 .stem {
   animation-name: assemble-stem;
 }
@@ -78,7 +74,6 @@
   animation-name: assemble-lower;
   animation-delay: 0.3s;
 }
-
 @keyframes assemble-stem {
   from {
     opacity: 0;
@@ -89,7 +84,6 @@
     transform: translateY(0);
   }
 }
-
 @keyframes assemble-upper {
   from {
     opacity: 0;
@@ -100,7 +94,6 @@
     transform: translate(0, 0) rotate(0);
   }
 }
-
 @keyframes assemble-lower {
   from {
     opacity: 0;
@@ -111,7 +104,6 @@
     transform: translate(0, 0) rotate(0);
   }
 }
-
 @keyframes rotate-k {
   0%,
   100% {
@@ -131,7 +123,91 @@
       rotateY(-32deg) rotateZ(5deg);
   }
 }
-
+.connections {
+  position: absolute;
+  z-index: 1;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  pointer-events: none;
+}
+.connectionLine {
+  stroke: #ffe600;
+  stroke-width: 1.4;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  opacity: 0;
+  filter: drop-shadow(0 0 3px rgb(255 230 0 / 35%));
+  animation:
+    draw-connection 1.5s ease-in-out var(--line-delay) both,
+    erase-connection 1.5s ease-in-out calc(37.4s - var(--point-delay)) forwards;
+}
+.pointHalo {
+  fill: #ffe600;
+  opacity: 0;
+  transform-box: fill-box;
+  transform-origin: center;
+  filter: blur(3px);
+  animation:
+    halo-appear 0.65s ease-out var(--point-delay) both,
+    halo-disappear 0.35s ease-in calc(38.9s - var(--point-delay)) forwards;
+}
+.point {
+  fill: #ffe600;
+  opacity: 0;
+  transform-box: fill-box;
+  transform-origin: center;
+  filter: drop-shadow(0 0 3px rgb(255 230 0 / 95%))
+    drop-shadow(0 0 8px rgb(255 230 0 / 55%));
+  animation:
+    point-appear 0.4s cubic-bezier(0.16, 1, 0.3, 1) var(--point-delay) both,
+    point-disappear 0.35s ease-in calc(38.9s - var(--point-delay)) forwards;
+}
+@keyframes point-appear {
+  0% {
+    opacity: 0;
+    transform: scale(0.2);
+  }
+  65% {
+    opacity: 1;
+    transform: scale(1.5);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+@keyframes halo-appear {
+  0% {
+    opacity: 0;
+    transform: scale(0.3);
+  }
+  45% {
+    opacity: 0.45;
+    transform: scale(1.35);
+  }
+  100% {
+    opacity: 0.18;
+    transform: scale(1);
+  }
+}
+@keyframes draw-connection {
+  0% {
+    opacity: 0;
+    stroke-dashoffset: 1;
+  }
+  10% {
+    opacity: 0.8;
+  }
+  100% {
+    opacity: 0.65;
+    stroke-dashoffset: 0;
+  }
+}
 .card {
   position: absolute;
   z-index: 2;
@@ -140,8 +216,7 @@
   padding: clamp(10px, 2.2cqw, 16px);
   border: 1px solid rgb(195 156 255 / 20%);
   border-radius: clamp(10px, 2.5cqw, 18px);
-  background: rgb(25 21 31 / 65%);
-  box-shadow: 0 12px 35px rgb(0 0 0 / 15%);
+  background: rgb(25 21 31 / 85%);
   color: #d1c4e4;
   font-family: Arial, Helvetica, sans-serif;
   font-size: clamp(10px, 2.8cqw, 18px);
@@ -152,40 +227,51 @@
   pointer-events: none;
   transform-origin: center;
   animation:
-    rotate-k 12s ease-in-out var(--rotation-delay, 3.6s) infinite,
-    card-visibility 17.5s ease-in-out var(--card-delay, 0s) both;
+    connected-card-appear 0.9s cubic-bezier(0.16, 1, 0.3, 1) var(--card-delay)
+      both,
+    connected-card-disappear 0.6s ease-in calc(36.8s - var(--point-delay))
+      forwards;
 }
 .card::first-line {
   color: #bd94ff;
 }
-
 .cardOne {
-  --card-delay: 0.6s;
   left: 5%;
   top: 82%;
 }
 .cardTwo {
-  --card-delay: 0.9s;
   right: 0;
   top: 65%;
 }
 .cardThree {
-  --card-delay: 1.2s;
   left: 0;
   top: 46%;
 }
 .cardFour {
-  --card-delay: 1.5s;
   right: 0;
   top: 27%;
 }
 .cardFive {
-  --card-delay: 1.8s;
-  left: 4%;
+  left: 29%;
   top: 1%;
   width: 42%;
 }
-
+@keyframes connected-card-appear {
+  from {
+    opacity: 0;
+    transform: translateY(12px) scale(0.94);
+    box-shadow:
+      0 0 0 rgb(0 0 0 / 0%),
+      0 0 0 rgb(155 100 245 / 0%);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    box-shadow:
+      0 14px 36px rgb(0 0 0 / 25%),
+      0 0 24px rgb(155 100 245 / 14%);
+  }
+}
 .code {
   margin: 0;
   color: #c7bdd2;
@@ -211,32 +297,48 @@
 .value {
   color: #c2b1f1;
 }
-@keyframes card-visibility {
-  0% {
-    opacity: 0;
-
-    box-shadow:
-      0 0 0 rgb(0 0 0 / 0%),
-      0 0 0 rgb(155 100 245 / 0%);
-  }
-
-  8.228571%,
-  85.714286% {
+/* Обратное исчезновение только карточек, линий и точек. */
+@keyframes connected-card-disappear {
+  from {
     opacity: 1;
-
-    box-shadow:
-      0 14px 36px rgb(0 0 0 / 25%),
-      0 0 24px rgb(155 100 245 / 14%);
+    transform: translateY(0) scale(1);
   }
-
-  100% {
+  to {
     opacity: 0;
-
-    box-shadow:
-      0 0 0 rgb(0 0 0 / 0%),
-      0 0 0 rgb(155 100 245 / 0%);
+    transform: translateY(12px) scale(0.94);
   }
 }
+@keyframes erase-connection {
+  from {
+    opacity: 0.65;
+    stroke-dashoffset: 0;
+  }
+  to {
+    opacity: 0;
+    stroke-dashoffset: 1;
+  }
+}
+@keyframes point-disappear {
+  from {
+    opacity: 1;
+    transform: scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: scale(0.2);
+  }
+}
+@keyframes halo-disappear {
+  from {
+    opacity: 0.18;
+    transform: scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: scale(0.3);
+  }
+}
+/* Маленький логотип */
 .logoVariant {
   flex: 0 0 0.78em;
   width: 0.78em;
@@ -249,16 +351,22 @@
 .logoVariant .glow {
   display: none;
 }
+.logoVariant .scene {
+  width: 100%;
+  height: 100%;
+  aspect-ratio: auto;
+  animation: none;
+  transform: none;
+}
 .logoVariant .svg {
   width: 100%;
   height: 100%;
   transform-origin: center;
-  animation: rotate-logo 12s ease-in-out var(--rotation-delay, 3.6s) infinite;
+  animation: rotate-logo 12s ease-in-out 3.6s infinite;
 }
 .logoVariant .piece {
   animation: none;
 }
-
 @keyframes rotate-logo {
   0%,
   100% {
@@ -278,16 +386,28 @@
       rotateZ(5deg);
   }
 }
-
 @media (prefers-reduced-motion: reduce) {
+  .scene,
   .svg,
   .floating,
   .piece,
-  .card {
+  .card,
+  .point,
+  .pointHalo,
+  .connectionLine,
+  .logoVariant .svg {
     animation: none;
     transform: none;
   }
-  .card {
+  .card,
+  .point {
     opacity: 1;
+  }
+  .pointHalo {
+    opacity: 0.18;
+  }
+  .connectionLine {
+    opacity: 0.65;
+    stroke-dashoffset: 0;
   }
 }

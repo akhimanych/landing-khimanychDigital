@@ -1,45 +1,79 @@
+import { useState } from "react";
+import { Link } from "react-router-dom";
+import PrivacyModal from "@/shared/ui/wedgets/projectContact/privacyModal";
 import styles from "./footer.module.css";
 
-type FooterProps = {
-  telegramUrl?: string;
-  email?: string;
-  privacyUrl?: string;
-};
-
-function TelegramIcon() {
+function ArrowIcon({
+  className,
+  direction = "diagonal",
+}: {
+  className?: string;
+  direction?: "diagonal" | "up";
+}) {
   return (
-    <svg viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false">
+    <svg
+      className={className}
+      width="18"
+      height="18"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+      focusable="false"
+    >
       <path
-        d="M20.7 3.5 3.2 10.3c-1.2.5-1.2 1.2-.2 1.5l4.5 1.4 1.7 5.3c.2.6.4.7.8.7.3 0 .5-.2.8-.4l2.5-2.4 4.6 3.4c.8.5 1.4.2 1.6-.8l2.8-13.4c.3-1.3-.5-1.8-1.6-1.4ZM8.2 12.9l10.1-6.4c.5-.3.9-.1.5.3l-8.3 7.5-.3 3.2-2-4.6Z"
-        fill="currentColor"
+        d={
+          direction === "up" ? "M12 20V4M5 11l7-7 7 7" : "M5 19 19 5M5 5h14v14"
+        }
       />
     </svg>
   );
 }
 
-function GmailIcon() {
+function SocialIcon({ type }: { type: "telegram" | "mail" }) {
   return (
     <svg viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false">
-      <path
-        d="M3 19V5.5L12 12l9-6.5V19h-4V10l-5 3.6L7 10v9H3Z"
-        stroke="currentColor"
-        strokeWidth="1.6"
-        strokeLinejoin="round"
-      />
+      {type === "telegram" ? (
+        <path
+          d="m21 3-3.5 17-5.8-4.3-3 2.8.5-4.9L18 6.3 6.7 12.7 2 11.2 21 3Z"
+          fill="currentColor"
+        />
+      ) : (
+        <>
+          <rect
+            x="3"
+            y="5"
+            width="18"
+            height="14"
+            rx="2"
+            stroke="currentColor"
+            strokeWidth="1.7"
+          />
+          <path
+            d="m4 6 8 6 8-6"
+            stroke="currentColor"
+            strokeWidth="1.7"
+            strokeLinejoin="round"
+          />
+        </>
+      )}
     </svg>
   );
 }
 
-export default function Footer({
-  telegramUrl = "https://t.me/akhimanych",
-  email = "akhimanych@gmail.com",
-  privacyUrl,
-}: FooterProps) {
-  function scrollToTop() {
-    const reduced = window.matchMedia(
-      "(prefers-reduced-motion: reduce)",
-    ).matches;
-    window.scrollTo({ top: 0, behavior: reduced ? "instant" : "smooth" });
+export function Footer() {
+  const [privacyOpen, setPrivacyOpen] = useState(false);
+
+  function backToTop() {
+    window.scrollTo({
+      top: 0,
+      behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches
+        ? "instant"
+        : "smooth",
+    });
   }
 
   return (
@@ -47,13 +81,13 @@ export default function Footer({
       <div className={styles.container}>
         <div className={styles.grid}>
           <div className={styles.brand}>
-            <a
+            <Link
               className={styles.logo}
-              href="/"
+              to="/"
               aria-label="khimanychDigital — на главную"
             >
               khimanych<span>Digital</span>
-            </a>
+            </Link>
             <p className={styles.description}>
               Разработка сайтов
               <br />и веб-приложений.
@@ -63,62 +97,57 @@ export default function Footer({
               <br />и развитие цифровых проектов.
             </p>
           </div>
-          <nav aria-label="Навигация в подвале">
-            <h2 className={styles.heading}>Навигация</h2>
-            <ul className={styles.links}>
-              <li>
-                <a href="/#services">Услуги</a>
-              </li>
-              <li>
-                <a href="/#process">Как я работаю</a>
-              </li>
-              <li>
-                <a href="/#about">Обо мне</a>
-              </li>
-              <li>
-                <a href="/contacts">Контакты</a>
-              </li>
-            </ul>
-          </nav>
-          <div>
+          <div className={styles.task}>
+            <h2 className={styles.heading}>Ваша задача</h2>
+            <p className={styles.taskQuestion}>
+              Новый сайт, доработка
+              <br />
+              или развитие проекта?
+            </p>
+            <p className={styles.taskDescription}>
+              Начнём с того, что нужно
+              <br />
+              вашему бизнесу сейчас.
+            </p>
+          </div>
+          <div className={styles.contacts}>
             <h2 className={styles.heading}>Связь</h2>
             <ul className={styles.links}>
-              {telegramUrl && (
-                <li>
-                  <a
-                    className={styles.socialLink}
-                    href={telegramUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    <span className={styles.socialIcon}>
-                      <TelegramIcon />
-                    </span>
-                    <span>Telegram</span>
-                    <span className={styles.externalArrow} aria-hidden="true">
-                      ↗
-                    </span>
-                    <span className={styles.srOnly}> (в новой вкладке)</span>
-                  </a>
-                </li>
-              )}
-              {email && (
-                <li>
-                  <a className={styles.socialLink} href={`mailto:${email}`}>
-                    <span className={styles.socialIcon}>
-                      <GmailIcon />
-                    </span>
-                    <span>Gmail</span>
-                    <span className={styles.externalArrow} aria-hidden="true">
-                      ↗
-                    </span>
-                  </a>
-                </li>
-              )}
-              <li className={styles.discuss}>
-                <a href="/contacts">
-                  Обсудить проект <span aria-hidden="true">↗</span>
+              <li>
+                <a
+                  className={styles.socialLink}
+                  href="https://t.me/akhimanych"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <span className={styles.socialIcon}>
+                    <SocialIcon type="telegram" />
+                  </span>
+                  Telegram
+                  <ArrowIcon className={styles.externalArrow} />
+                  <span className={styles.srOnly}>
+                    {" "}
+                    — откроется в новой вкладке
+                  </span>
                 </a>
+              </li>
+              <li>
+                <a
+                  className={styles.socialLink}
+                  href="mailto:akhimanych@gmail.com"
+                >
+                  <span className={styles.socialIcon}>
+                    <SocialIcon type="mail" />
+                  </span>
+                  Gmail
+                  <ArrowIcon className={styles.externalArrow} />
+                </a>
+              </li>
+              <li className={styles.discuss}>
+                <Link className={styles.discussLink} to="/contacts">
+                  Обсудить проект
+                  <ArrowIcon className={styles.externalArrow} />
+                </Link>
               </li>
             </ul>
           </div>
@@ -128,17 +157,28 @@ export default function Footer({
             © {new Date().getFullYear()} khimanychDigital
           </p>
           <div className={styles.bottomLinks}>
-            {privacyUrl && <a href={privacyUrl}>Политика конфиденциальности</a>}
             <button
-              className={styles.backToTop}
               type="button"
-              onClick={scrollToTop}
+              className={styles.privacyButton}
+              aria-haspopup="dialog"
+              onClick={() => setPrivacyOpen(true)}
             >
-              Наверх <span aria-hidden="true">↑</span>
+              Политика конфиденциальности
+            </button>
+            <button
+              type="button"
+              className={styles.backToTop}
+              onClick={backToTop}
+            >
+              Наверх
+              <ArrowIcon className={styles.topArrow} direction="up" />
             </button>
           </div>
         </div>
       </div>
+      <PrivacyModal open={privacyOpen} onClose={() => setPrivacyOpen(false)} />
     </footer>
   );
 }
+
+export default Footer;

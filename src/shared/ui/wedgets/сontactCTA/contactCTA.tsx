@@ -1,16 +1,62 @@
-import { useId } from "react";
+"use client";
+
+import { Link } from "react-router-dom";
+import { useEffect, useId, useRef, useState } from "react";
 import styles from "./contactCTA.module.css";
 
 export default function ContactCTA() {
   const id = useId();
   const ribbonId = `${id}-ribbon`;
   const edgeId = `${id}-edge`;
+  const sectionRef = useRef<HTMLElement>(null);
+  const [revealState, setRevealState] = useState<
+    "idle" | "pending" | "visible"
+  >("idle");
+
+  useEffect(() => {
+    const section = sectionRef.current;
+    if (!section) return;
+    const motion = window.matchMedia("(prefers-reduced-motion: reduce)");
+    let observer: IntersectionObserver | undefined;
+    const reveal = () => {
+      setRevealState("visible");
+      observer?.disconnect();
+    };
+    const onMotionChange = () => {
+      if (motion.matches) reveal();
+    };
+    if (motion.matches || !("IntersectionObserver" in window)) {
+      reveal();
+      return;
+    }
+    setRevealState("pending");
+    observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (entry.isIntersecting && entry.intersectionRatio >= 0.2) {
+            reveal();
+            break;
+          }
+        }
+      },
+      { threshold: [0, 0.2] },
+    );
+    observer.observe(section);
+    motion.addEventListener("change", onMotionChange);
+    return () => {
+      observer?.disconnect();
+      motion.removeEventListener("change", onMotionChange);
+    };
+  }, []);
 
   return (
     <section
+      ref={sectionRef}
       id="contact"
       className={styles.section}
+      data-reveal={revealState}
       aria-labelledby={`${id}-title`}
+      onFocusCapture={() => setRevealState("visible")}
     >
       <div className={styles.wave} aria-hidden="true">
         <svg
@@ -18,6 +64,7 @@ export default function ContactCTA() {
           viewBox="0 0 1440 460"
           fill="none"
           preserveAspectRatio="xMidYMid slice"
+          focusable="false"
         >
           <defs>
             <linearGradient
@@ -72,19 +119,31 @@ export default function ContactCTA() {
       </div>
       <div className={styles.inner}>
         <div className={styles.copy}>
-          <span className={styles.accentLine} aria-hidden="true" />
           <h2 id={`${id}-title`} className={styles.title}>
-            Есть идея?
-            <br />
-            Давайте создадим.
+            <span className={styles.titleLine}>Есть идея?</span>
+            <span className={styles.titleLine}>Реализуем вместе.</span>
           </h2>
         </div>
-        <a href="/contacts" className={styles.button}>
-          Обсудить проект
-          <span className={styles.arrow} aria-hidden="true">
-            ↗
-          </span>
-        </a>
+        <div className={styles.buttonReveal}>
+          <Link to="/contacts" className={styles.button}>
+            Обсудить проект
+            <svg
+              className={styles.arrow}
+              width="18"
+              height="18"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              aria-hidden="true"
+              focusable="false"
+            >
+              <path d="M5 19 19 5M5 5h14v14" />
+            </svg>
+          </Link>
+        </div>
       </div>
     </section>
   );

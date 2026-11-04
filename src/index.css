@@ -43,3 +43,49 @@ img,
 svg {
   display: block;
 }
+/* Неоновые края по всей странице. */
+body::before,
+body::after {
+  content: "";
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  z-index: 50;
+
+  width: 1px;
+  pointer-events: none;
+
+  background: linear-gradient(
+    to bottom,
+    transparent 0%,
+    rgb(189 148 255 / 35%) 12%,
+    rgb(189 148 255 / 85%) 50%,
+    rgb(189 148 255 / 35%) 88%,
+    transparent 100%
+  );
+
+  box-shadow:
+    0 0 6px rgb(189 148 255 / 65%),
+    0 0 18px rgb(146 80 245 / 40%),
+    0 0 42px rgb(146 80 245 / 22%);
+}
+
+body::before {
+  left: 0;
+}
+
+body::after {
+  right: 0;
+}
+
+/* На телефонах — более мягкое свечение. */
+@media (max-width: 600px) {
+  body::before,
+  body::after {
+    opacity: 0.55;
+
+    box-shadow:
+      0 0 5px rgb(189 148 255 / 50%),
+      0 0 14px rgb(146 80 245 / 30%);
+  }
+}

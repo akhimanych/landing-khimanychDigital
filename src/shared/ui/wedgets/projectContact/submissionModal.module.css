@@ -1,0 +1,183 @@
+.dialog {
+  box-sizing: border-box;
+  width: min(500px, calc(100% - 32px));
+  max-height: calc(100dvh - 48px);
+  margin: auto;
+  padding: 0;
+  overflow-y: auto;
+
+  color: #e9e5ee;
+  background: #17111f;
+  border: 1px solid #443253;
+  border-radius: 24px;
+
+  font-family: inherit;
+
+  box-shadow:
+    0 30px 100px rgb(0 0 0 / 45%),
+    0 0 60px rgb(146 80 245 / 8%);
+}
+
+.dialog *,
+.dialog *::before,
+.dialog *::after {
+  box-sizing: border-box;
+}
+
+.dialog::backdrop {
+  background: rgb(8 6 12 / 78%);
+  backdrop-filter: blur(7px);
+}
+
+.content {
+  position: relative;
+  padding: 48px 36px 36px;
+  text-align: center;
+}
+
+.close {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+
+  display: grid;
+  place-items: center;
+
+  width: 36px;
+  height: 36px;
+  padding: 7px;
+
+  color: #b6afc1;
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 50%;
+
+  cursor: pointer;
+}
+
+.close svg {
+  width: 22px;
+  height: 22px;
+}
+
+.icon {
+  display: grid;
+  place-items: center;
+
+  width: 76px;
+  height: 76px;
+  margin: 0 auto 26px;
+
+  border: 1px solid;
+  border-radius: 50%;
+}
+
+.icon svg {
+  width: 36px;
+  height: 36px;
+}
+
+.success {
+  color: #bd94ff;
+  background: rgb(146 80 245 / 14%);
+  border-color: rgb(189 148 255 / 30%);
+}
+
+.error {
+  color: #f3abb6;
+  background: rgb(232 99 123 / 10%);
+  border-color: rgb(243 171 182 / 28%);
+}
+
+.eyebrow {
+  margin: 0 0 12px;
+
+  color: #a99ab9;
+  font-size: 11px;
+  line-height: 1.5;
+  letter-spacing: 0.14em;
+}
+
+.title {
+  margin: 0;
+
+  font-size: clamp(26px, 5vw, 34px);
+  font-weight: 400;
+  line-height: 1.2;
+  letter-spacing: -0.03em;
+}
+
+.description {
+  margin: 18px 0 28px;
+
+  color: #b6afc1;
+  font-size: 16px;
+  line-height: 1.75;
+}
+
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+
+  width: 100%;
+  min-height: 56px;
+  padding: 15px 24px;
+
+  color: #fff;
+  background: #9250f5;
+  border: 0;
+  border-radius: 999px;
+
+  font: inherit;
+  font-size: 16px;
+
+  cursor: pointer;
+  transition: background-color 180ms ease;
+}
+
+.email {
+  display: inline-block;
+  margin-top: 20px;
+
+  color: #bd94ff;
+  font-size: 14px;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+  text-decoration: none;
+}
+
+.close:focus-visible,
+.button:focus-visible,
+.email:focus-visible {
+  outline: 2px solid #bd94ff;
+  outline-offset: 4px;
+}
+
+@media (hover: hover) {
+  .button:hover {
+    background: #a16af7;
+  }
+
+  .close:hover {
+    color: #fff;
+    background: rgb(255 255 255 / 6%);
+  }
+
+  .email:hover {
+    text-decoration: underline;
+  }
+}
+
+@media (max-width: 520px) {
+  .content {
+    padding: 44px 24px 28px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .button {
+    transition: none;
+  }
+}

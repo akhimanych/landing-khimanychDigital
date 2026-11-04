@@ -42,14 +42,19 @@
   line-height: 1.1;
   letter-spacing: -0.045em;
 }
+.titleLine {
+  display: block;
+}
+.buttonReveal {
+  flex: 0 0 auto;
+  margin-right: clamp(0px, 6vw, 110px);
+}
 .button {
   display: inline-flex;
-  flex: 0 0 auto;
   align-items: center;
   justify-content: center;
   gap: 14px;
   min-height: 60px;
-  margin-right: clamp(0px, 6vw, 110px);
   padding: 16px 32px;
   border: 1px solid transparent;
   border-radius: 999px;
@@ -67,8 +72,10 @@
     transform 200ms ease;
 }
 .arrow {
-  font-size: 24px;
-  line-height: 1;
+  display: block;
+  flex: 0 0 18px;
+  width: 18px;
+  height: 18px;
   transition: transform 200ms ease;
 }
 .button:focus-visible {
@@ -82,11 +89,11 @@
     transform: translateY(-2px);
   }
   .button:hover .arrow {
-    transform: translate(2px, -2px);
+    transform: translate(3px, -3px);
   }
 }
 .button:active {
-  transform: translateY(0);
+  transform: translateY(0) scale(0.98);
 }
 .wave {
   position: absolute;
@@ -103,6 +110,7 @@
   height: 130%;
   background: radial-gradient(ellipse, rgb(143 73 238 / 10%), transparent 65%);
   content: "";
+  animation: ctaGlowActive 8s ease-in-out infinite;
 }
 .waveSvg {
   position: absolute;
@@ -111,6 +119,56 @@
   display: block;
   width: 100%;
   height: 100%;
+  transform-origin: 75% 65%;
+  animation: ctaWaveActive 8s ease-in-out infinite;
+}
+.section[data-reveal="pending"] .accentLine,
+.section[data-reveal="pending"] .titleLine,
+.section[data-reveal="pending"] .buttonReveal {
+  opacity: 0;
+  transform: translateY(16px);
+}
+.section[data-reveal="visible"] .accentLine {
+  animation: ctaRevealOnScroll 850ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+.section[data-reveal="visible"] .titleLine:nth-child(1) {
+  animation: ctaRevealOnScroll 850ms cubic-bezier(0.22, 1, 0.36, 1) 100ms both;
+}
+.section[data-reveal="visible"] .titleLine:nth-child(2) {
+  animation: ctaRevealOnScroll 850ms cubic-bezier(0.22, 1, 0.36, 1) 2950ms both;
+}
+.section[data-reveal="visible"] .buttonReveal {
+  animation: ctaRevealOnScroll 850ms cubic-bezier(0.22, 1, 0.36, 1) 3950ms both;
+}
+@keyframes ctaWaveActive {
+  0%,
+  100% {
+    transform: translate(0, 10px) scale(1.06);
+  }
+  50% {
+    transform: translate(-12px, -18px) scale(1.09);
+  }
+}
+@keyframes ctaGlowActive {
+  0%,
+  100% {
+    opacity: 0.45;
+    transform: translateX(0) scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: translateX(-20px) scale(1.15);
+  }
+}
+@keyframes ctaRevealOnScroll {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 @media (max-width: 900px) {
   .inner {
@@ -118,9 +176,11 @@
     min-height: 320px;
     padding-block: 56px 88px;
   }
+  .buttonReveal {
+    margin-right: 0;
+  }
   .button {
     min-height: 54px;
-    margin-right: 0;
     padding: 15px 24px;
     font-size: 16px;
   }
@@ -149,8 +209,26 @@
   }
 }
 @media (prefers-reduced-motion: reduce) {
+  .waveSvg,
+  .wave::before,
+  .section[data-reveal] .accentLine,
+  .section[data-reveal] .titleLine,
+  .section[data-reveal] .buttonReveal {
+    animation: none;
+  }
+  .section[data-reveal] .accentLine,
+  .section[data-reveal] .titleLine,
+  .section[data-reveal] .buttonReveal {
+    opacity: 1;
+    transform: none;
+  }
   .button,
   .arrow {
     transition: none;
+  }
+  .button:hover,
+  .button:active,
+  .button:hover .arrow {
+    transform: none;
   }
 }

@@ -39,9 +39,7 @@ export default function ProcessSteps() {
     if (!root || !track || !fill || !list) return;
 
     const items = Array.from(list.children) as HTMLLIElement[];
-    const motionQuery = window.matchMedia(
-      "(prefers-reduced-motion: reduce)",
-    );
+    const motionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
 
     let frameId = 0;
     let startedAt: number | null = null;
@@ -58,10 +56,7 @@ export default function ProcessSteps() {
 
         return Math.min(
           1,
-          Math.max(
-            0,
-            (itemBox.left - trackBox.left) / trackBox.width,
-          ),
+          Math.max(0, (itemBox.left - trackBox.left) / trackBox.width),
         );
       });
     }
@@ -74,9 +69,7 @@ export default function ProcessSteps() {
 
       items.forEach((item, index) => {
         const active =
-          motionQuery.matches ||
-          index === 0 ||
-          progress >= thresholds[index];
+          motionQuery.matches || index === 0 || progress >= thresholds[index];
 
         item.dataset.active = String(active);
       });
@@ -87,8 +80,7 @@ export default function ProcessSteps() {
 
       if (startedAt === null) startedAt = timestamp;
 
-      const cycleDuration =
-        FILL_DURATION + HOLD_DURATION + RESET_DURATION;
+      const cycleDuration = FILL_DURATION + HOLD_DURATION + RESET_DURATION;
 
       const elapsed = (timestamp - startedAt) % cycleDuration;
 
@@ -172,18 +164,12 @@ export default function ProcessSteps() {
 
                 <h3 className={styles.stepTitle}>{step.title}</h3>
 
-                <p className={styles.description}>
-                  {step.description}
-                </p>
+                <p className={styles.description}>{step.description}</p>
               </li>
             ))}
           </ol>
 
-          <div
-            ref={trackRef}
-            className={styles.track}
-            aria-hidden="true"
-          >
+          <div ref={trackRef} className={styles.track} aria-hidden="true">
             <div ref={fillRef} className={styles.fill} />
           </div>
         </div>
