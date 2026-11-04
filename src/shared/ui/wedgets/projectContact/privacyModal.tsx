@@ -1,6 +1,6 @@
 import { useEffect, useId, useRef } from "react";
 
-import styles from "./PrivacyModal.module.css";
+import styles from "./privacyModal.module.css";
 
 type PrivacyModalProps = {
   open: boolean;

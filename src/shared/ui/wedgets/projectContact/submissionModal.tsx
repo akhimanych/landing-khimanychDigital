@@ -1,6 +1,6 @@
 import { useEffect, useId, useRef } from "react";
 
-import styles from "./SubmissionModal.module.css";
+import styles from "./submissionModal.module.css";
 
 export type SubmissionResult = "success" | "error";
 
