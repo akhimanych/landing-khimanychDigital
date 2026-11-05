@@ -1,5 +1,4 @@
 import { useEffect, useId, useRef } from "react";
-
 import styles from "./privacyModal.module.css";
 
 type PrivacyModalProps = {
@@ -14,36 +13,19 @@ export default function PrivacyModal({ open, onClose }: PrivacyModalProps) {
 
   useEffect(() => {
     const dialog = dialogRef.current;
-
-    if (!dialog || !open) {
-      return;
-    }
-
+    if (!dialog || !open) return;
     const previousFocus =
       document.activeElement instanceof HTMLElement
         ? document.activeElement
         : null;
-
     const previousOverflow = document.body.style.overflow;
-
     document.body.style.overflow = "hidden";
-
-    if (!dialog.open) {
-      dialog.showModal();
-    }
-
+    if (!dialog.open) dialog.showModal();
     titleRef.current?.focus();
-
     return () => {
-      if (dialog.open) {
-        dialog.close();
-      }
-
+      if (dialog.open) dialog.close();
       document.body.style.overflow = previousOverflow;
-
-      if (previousFocus?.isConnected) {
-        previousFocus.focus();
-      }
+      if (previousFocus?.isConnected) previousFocus.focus();
     };
   }, [open]);
 
@@ -78,9 +60,7 @@ export default function PrivacyModal({ open, onClose }: PrivacyModalProps) {
             />
           </svg>
         </button>
-
         <p className={styles.eyebrow}>KHIMANYCHDIGITAL</p>
-
         <h2
           ref={titleRef}
           id={`${id}-title`}
@@ -89,7 +69,6 @@ export default function PrivacyModal({ open, onClose }: PrivacyModalProps) {
         >
           Политика конфиденциальности
         </h2>
-
         <div className={styles.text}>
           <section>
             <h3>1. Общие положения</h3>
@@ -108,7 +87,6 @@ export default function PrivacyModal({ open, onClose }: PrivacyModalProps) {
               <a href="mailto:akhimanych@gmail.com">akhimanych@gmail.com</a>.
             </p>
           </section>
-
           <section>
             <h3>2. Какие данные передаются</h3>
             <p>При заполнении формы посетитель указывает:</p>
@@ -131,7 +109,6 @@ export default function PrivacyModal({ open, onClose }: PrivacyModalProps) {
               для обсуждения задачи.
             </p>
           </section>
-
           <section>
             <h3>3. Для чего используются данные</h3>
             <p>
@@ -143,7 +120,6 @@ export default function PrivacyModal({ open, onClose }: PrivacyModalProps) {
               подписке на рекламную рассылку.
             </p>
           </section>
-
           <section>
             <h3>4. Как передаётся заявка</h3>
             <p>
@@ -176,17 +152,16 @@ export default function PrivacyModal({ open, onClose }: PrivacyModalProps) {
               введённые пользователем имя, адрес электронной почты, телефон или
               имя пользователя Telegram, если они указаны, а также содержание
               сообщения. Обращения поступают на адрес электронной почты
-              оператора akhimanych@gmail.com и сохраняются в почтовом ящике
-              сервиса Gmail. Оператор использует эти сведения для рассмотрения
-              обращения, обратной связи и обсуждения проекта.
+              оператора [akhimanych@gmail.com](mailto:akhimanych@gmail.com) и
+              сохраняются в почтовом ящике сервиса Gmail. Оператор использует
+              эти сведения для рассмотрения обращения, обратной связи и
+              обсуждения проекта.
             </p>
           </section>
-
           <section>
             <h3>5. Срок хранения</h3>
             <p>Срок хранения 24 рабочих дня.</p>
           </section>
-
           <section>
             <h3>6. Вопросы и обращения</h3>
             <p>
@@ -203,13 +178,14 @@ export default function PrivacyModal({ open, onClose }: PrivacyModalProps) {
               Пользователь вправе направить запрос о своих персональных данных,
               требование об их уточнении, блокировании или уничтожении, отзыв
               согласия либо требование о прекращении обработки на электронную
-              почту оператора: akhimanych@gmail.com. В обращении следует указать
-              суть запроса и сведения, позволяющие определить, к каким данным он
-              относится. Для предотвращения раскрытия данных посторонним лицам
-              оператор при необходимости проверяет личность заявителя или
-              полномочия его представителя в порядке, предусмотренном
-              законодательством Российской Федерации. Информация об обработке
-              персональных данных и возможность ознакомления с ними
+              почту оператора:
+              [akhimanych@gmail.com](mailto:akhimanych@gmail.com). В обращении
+              следует указать суть запроса и сведения, позволяющие определить, к
+              каким данным он относится. Для предотвращения раскрытия данных
+              посторонним лицам оператор при необходимости проверяет личность
+              заявителя или полномочия его представителя в порядке,
+              предусмотренном законодательством Российской Федерации. Информация
+              об обработке персональных данных и возможность ознакомления с ними
               предоставляются в течение 10 рабочих дней с даты получения
               надлежащим образом оформленного запроса. При необходимости срок
               может быть продлён не более чем на 5 рабочих дней с направлением
@@ -232,17 +208,29 @@ export default function PrivacyModal({ open, onClose }: PrivacyModalProps) {
               направляет мотивированный ответ с указанием правового основания.
             </p>
           </section>
-
           <section>
             <h3>7. Актуальная редакция</h3>
             <p>Дата редакции: 04.10.2026</p>
           </section>
         </div>
-
         <div className={styles.footer}>
           <button type="button" className={styles.button} onClick={closeModal}>
             Закрыть
-            <span aria-hidden="true">↗</span>
+            <svg
+              className={styles.arrow}
+              width="18"
+              height="18"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              aria-hidden="true"
+              focusable="false"
+            >
+              <path d="M5 19 19 5M5 5h14v14" />
+            </svg>
           </button>
         </div>
       </div>
