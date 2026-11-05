@@ -374,6 +374,10 @@ button.privacy:focus-visible {
   .header {
     margin-bottom: 36px;
   }
+  .header .title {
+    width: 100%;
+    text-align: center;
+  }
 }
 @media (max-width: 520px) {
   .section {

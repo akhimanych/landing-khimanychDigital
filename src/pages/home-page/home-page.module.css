@@ -195,6 +195,10 @@
     max-width: 580px;
     font-size: 18px;
   }
+  .actions {
+    width: 100%;
+    justify-content: center;
+  }
   .visual {
     width: 100%;
     max-width: 520px;

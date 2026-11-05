@@ -160,14 +160,16 @@
 .principle .description {
   font-size: 14px;
 }
-/* Планшет и телефон: центрируем только заголовки и номера услуг. */
+/* Планшет и телефон: центрируем заголовки, но не описания. */
 @media (max-width: 900px) {
   .servicesTitle {
     width: 100%;
     text-align: center;
   }
   .serviceNumber,
-  .service .itemTitle {
+  .service .itemTitle,
+  .aboutTitle,
+  .principleTitle {
     text-align: center;
   }
   .description {
@@ -371,5 +373,24 @@
   }
   .principle + .principle {
     padding-top: 24px;
+  }
+}
+/* Описания блока «Обо мне» занимают всю ширину контейнера. */
+@media (max-width: 900px) {
+  .about {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .aboutIntro,
+  .aboutCopy,
+  .about .principles,
+  .about .principle {
+    min-width: 0;
+    width: 100%;
+  }
+  .aboutCopy .aboutText,
+  .about .principle .description {
+    width: 100%;
+    max-width: none;
+    text-align: left;
   }
 }

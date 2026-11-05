@@ -27,6 +27,9 @@
 .brand {
   min-width: 0;
 }
+.contacts {
+  min-width: 0;
+}
 .contacts .heading {
   text-align: center;
 }
@@ -221,7 +224,8 @@
 .logo:active {
   color: var(--accent);
 }
-@media (min-width: 801px) {
+/* Компьютер: прежняя сетка из трёх колонок. */
+@media (min-width: 901px) {
   .brand {
     justify-self: start;
     text-align: left;
@@ -243,13 +247,45 @@
     text-align: left;
   }
 }
-@media (max-width: 800px) {
+/* Планшет и телефон: бренд слева, контакты справа. */
+@media (max-width: 900px) {
   .grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 36px;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: clamp(16px, 4vw, 36px);
+  }
+  .task {
+    display: none;
   }
   .brand {
-    grid-column: 1 / -1;
+    grid-column: 1;
+    grid-row: 1;
+    justify-self: start;
+    text-align: left;
+  }
+  .contacts {
+    grid-column: 2;
+    grid-row: 1;
+    width: fit-content;
+    max-width: 100%;
+    justify-self: end;
+    text-align: left;
+  }
+  .logo {
+    font-size: clamp(16px, 3.9vw, 23px);
+    white-space: nowrap;
+  }
+  .description {
+    font-size: clamp(12px, 2.8vw, 16px);
+    overflow-wrap: anywhere;
+  }
+  .links a {
+    font-size: clamp(12px, 2.8vw, 16px);
+  }
+  .links .socialLink {
+    gap: clamp(6px, 1.5vw, 12px);
+  }
+  .links .discussLink {
+    gap: 4px;
   }
   .bottom {
     align-items: flex-start;
@@ -262,23 +298,14 @@
   }
 }
 @media (max-width: 420px) {
-  .grid {
-    grid-template-columns: 1fr;
-    gap: 32px;
-  }
   .heading {
     margin-bottom: 20px;
     font-size: 16px;
   }
-  .links a {
-    font-size: 14px;
-  }
-  .description,
-  .taskDescription {
-    font-size: 15px;
-  }
-  .taskQuestion {
-    font-size: 18px;
+  .socialIcon {
+    flex-basis: 18px;
+    width: 18px;
+    height: 18px;
   }
   .bottomLinks {
     align-items: flex-start;
